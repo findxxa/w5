@@ -1,0 +1,11 @@
+def test_load_objects365v2_annotations():
+    tmp_dir = tempfile.TemporaryDirectory()
+    fake_json_file = osp.join(tmp_dir.name, 'fake_data.json')
+    _create_objects365_json(fake_json_file)
+
+    dataset = Objects365V2Dataset(
+        ann_file=fake_json_file, classes=('bus', 'car'), pipeline=[])
+
+    # The Objects365V2Dataset need filter the `objv2_ignore_list`
+    assert len(dataset.data_infos) == 2
+    tmp_dir.cleanup()
